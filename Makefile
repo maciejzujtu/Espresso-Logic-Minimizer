@@ -24,5 +24,8 @@ build/%.o: src/%.s
 	@mkdir -p build
 	$(ASM) -o $@ $<
 
+single: build/$(FILE).o
+	$(LD) -o $(FILE) build/$(FILE).o $(LDFLAGS)
+
 clean:
 	rm -rf build/*.o $(TARGET)
