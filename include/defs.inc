@@ -22,9 +22,3 @@
 .equ O_RDONLY,          0x0000
 .equ O_WRONLY,          0x0001
 .equ O_RDWR,            0x0002
-
-// PRINT
-.globl usage_message
-.globl error_message
-usage_message:   .asciz "./main < file\n"
-error_message:   .asciz "Cannot open file\n"
