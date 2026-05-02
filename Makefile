@@ -6,19 +6,17 @@ ASM	= as	# assembler
 LD	= ld	# linker
 
 SDK_PATH = $(shell xcrun -sdk macosx --show-sdk-path) 
-LDFLAGS = -lSystem -syslibroot $(SDK_PATH) -e _main -arch arm64
+LDFLAGS = -lSystem -syslibroot $(SDK_PATH) -arch arm64
+LDFLAGS_MAIN = -lSystem -syslibroot $(SDK_PATH) -e _main -arch arm64
 
-TARGET = main
 BUILD = build
 
-SRCS = $(wildcard src/*.s)
-OBJS = $(patsubst src/%.s, build/%.o, $(SRCS))
+MAIN_OBJS = build/read.o build/parser.o build/truth.o build/minimize.o
 
-all: $(TARGET)
+all: main
 
-$(TARGET): $(OBJS)
-	$(LD) -o $@ $^ $(LDFLAGS)
-
+main: $(MAIN_OBJS)
+	$(LD) -o $@ $^ $(LDFLAGS_MAIN)
 
 build/%.o: src/%.s
 	@mkdir -p build
@@ -28,4 +26,4 @@ single: build/$(FILE).o
 	$(LD) -o $(FILE) build/$(FILE).o $(LDFLAGS)
 
 clean:
-	rm -rf build/*.o $(TARGET)
+	rm -rf build/*.o main

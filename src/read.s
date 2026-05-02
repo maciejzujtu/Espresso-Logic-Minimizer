@@ -40,7 +40,7 @@
 
 // This is our main file body that is
 // responsible for executing instructions
-// in the following orders.
+// as per in README.md
 
 .global    _main
 .section __TEXT, __text; // Read & Execute
@@ -90,7 +90,13 @@ _read:
     MOV     x1, x20
     
     BL              _parser
-    B               _read
+    MOV             x20, x0                     // Save RPN length
+    ADRP            x0,     output@PAGE
+    ADD             x0, x0, output@PAGEOFF
+    MOV             x1, x20
+    BL              _truth                      // Generate truth table
+    BL              _minimize                   // Minimize via Espresso
+    B               _close
 
 _close:
     MOV     x0, x19
